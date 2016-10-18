@@ -31,6 +31,12 @@
             map: map,
             title: 'Lake Margaret'
         });
+        var infowindow = new google.maps.InfoWindow({
+            content: 'Lake Margaret'
+        });
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
       }
     </script>
 
