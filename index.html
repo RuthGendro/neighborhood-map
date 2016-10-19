@@ -24,10 +24,92 @@
         var markers = [];
 
       function initMap() {
+          var styles = [
+    {
+        "featureType": "administrative",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#444444"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#f2f2f2"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 45
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#46bcec"
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    }
+]
         // Constructor creates a new map - only center and zoom are required.
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 47.742322, lng: -121.985678},
-          zoom: 10
+          zoom: 10,
+            styles: styles,
+            mapTypeControl: false
         });
 
           // map listings shown to user
@@ -41,6 +123,12 @@
           var largeInfowindow = new google.maps.InfoWindow();
           var bounds = new google.maps.LatLngBounds();
 
+          // Style the markers - listing marker
+          var defaultIcon = makeMarkerIcon('32c548');
+
+          // Create a highlighter marker on mouseover
+          var highlightedIcon = makeMarkerIcon('FFFF24');
+
           // Uses the location array to create an array of markers on initialization
           for (var i = 0; i < locations.length; i++) {
               // Get the position from the location array
@@ -51,6 +139,7 @@
                   map: map,
                   position: position,
                   title: title,
+                  icon: defaultIcon,
                   animation: google.maps.Animation.DROP,
                   id: i
               });
@@ -61,6 +150,13 @@
               // Create an onclick event to open an infowindow at each marker
               marker.addListener('click', function() {
                   populateInfoWindow(this, largeInfowindow);
+              });
+              // Two event listeners - for mouseover and mouseout
+              marker.addListener('mouseover', function() {
+                  this.setIcon(highlightedIcon);
+              });
+              marker.addListener('mouseout', function() {
+                  this.setIcon(defaultIcon);
               });
           }
           map.fitBounds(bounds);
@@ -82,6 +178,17 @@
                   });
               }
           }
+
+        // takes in a color and creates a new marker icon of that color
+        function makeMarkerIcon(markerColor) {
+            var markerImage = new google.maps.MarkerImage(
+                'https://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + '|40|_|%E2%80%A2',
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(10, 24),
+                new google.maps.Size(21, 34));
+            return markerImage;
+        }
 
     </script>
 
