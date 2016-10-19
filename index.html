@@ -11,12 +11,38 @@
       }
 
       #map {
-        height: 100%;
+          bottom: 0px;
+          height: 100%;
+          left: 362px;
+          positon: absolute;
+          right: 0px;
+          width: auto;
+          top: -190px;
       }
+
+        .options-box {
+            background: #fff;
+            border: 1px solid #999;
+            border-radius: 3px;
+            height: 100%;
+            line-height: 35px;
+            padding: 10px 10px 30px 10px;
+            text-align: left;
+            width: 340px;
+        }
     </style>
   </head>
   <body>
-    <div id="map"></div>
+      <div class="container">
+          <div class="options-box">
+              <h1>Fishing Holes We've Visited</h1>
+              <div>
+               <input id="show-listings" type="button" value="Show Listings">
+               <input id="hide-listings" type="button" value="Hide Listings">
+              </div>
+          </div>
+      </div>
+         <div id="map"></div>
     <script>
       var map;
 
@@ -136,7 +162,6 @@
               var title = locations[i].title;
               // Create a marker per location, and put into markers array
               var marker = new google.maps.Marker({
-                  map: map,
                   position: position,
                   title: title,
                   icon: defaultIcon,
@@ -159,8 +184,15 @@
                   this.setIcon(defaultIcon);
               });
           }
-          map.fitBounds(bounds);
+
+          document.getElementById('show-listings').addEventListener('click', showListings);
+          document.getElementById('hide-listings').addEventListener('click', hideListings);
       }
+
+
+
+
+
 
           // This function populates the infowindow when the mark is clicked. Allows
           // only one infowindow will open at the marker that is clicked, and
@@ -178,6 +210,23 @@
                   });
               }
           }
+
+        function showListings() {
+            var bounds = new google.maps.LatLngBounds();
+            // Extend the boundaries of the map for each marker and display the marker
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+                bounds.extend(markers[i].position);
+            }
+            map.fitBounds(bounds);
+        }
+
+        // This function will through through the listings and hide them all
+        function hideListings() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+        }
 
         // takes in a color and creates a new marker icon of that color
         function makeMarkerIcon(markerColor) {
