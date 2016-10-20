@@ -38,7 +38,7 @@
               <h1>Fishing Holes We've Visited</h1>
               <div>
                <input id="show-listings" type="button" value="Show Listings">
-               <input id="hide-listings" type="button" value="Hide Listings">
+<!--               <input id="hide-listings" type="button" value="Hide Listings">-->
               </div>
           </div>
       </div>
@@ -186,7 +186,7 @@
           }
 
           document.getElementById('show-listings').addEventListener('click', showListings);
-          document.getElementById('hide-listings').addEventListener('click', hideListings);
+//          document.getElementById('hide-listings').addEventListener('click', hideListings);
       }
 
 
@@ -203,13 +203,47 @@
                   infowindow.marker = marker;
                   infowindow.setContent('<div>' + marker.title + '</div>');
                   infowindow.open(map, marker);
-                  // Make sure the marker property is cleared if the infowwindow
-                  // is closed
+                  // Make sure the marker property is cleared if the
+                  // infowwindow is closed
                   infowindow.addListener('closeclick',function(){
                       infowindow.setMarker(null);
                   });
+                  var streetViewService = new google.maps.StreetViewService();
+                  var radius = 50;
+                  // In case the status is OK, which means the pano was found,
+                  // compute the position of the streetview image, then
+                  // calculate heading, then get the pano and set options
+                  function getStreetView(data, status) {
+                      if (status == google.maps.StreetViewStatus.OK) {
+                          var nearStreetViewLocation = data.location.latLng;
+                          var heading = google.maps.geometry.spherical.computeHeading(
+                            nearStreetViewLocation, marker.position);
+                            infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+                            var panoramaOptions = {
+                                position: nearStreetViewLocation,
+                                pov: {
+                                    heading: heading,
+                                    pitch: 30
+                                }
+                            };
+
+                      var panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('pano'), panoramaOptions);
+                          } else {
+                              infowindow.setContent('<div>' + marker.title + '</div>' +
+                                                    '<div>No Street View Found</div>');
+                          }
+                    }
+                  // Use streetview service to get the closest streeview image within
+                  // 50 meters of the markers position
+                  streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+                  // Open the infowindow on the correct marker
+                  infowindow.open(map, marker);
               }
           }
+
+
+
 
         function showListings() {
             var bounds = new google.maps.LatLngBounds();
@@ -222,11 +256,11 @@
         }
 
         // This function will through through the listings and hide them all
-        function hideListings() {
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-            }
-        }
+//        function hideListings() {
+//            for (var i = 0; i < markers.length; i++) {
+//                markers[i].setMap(null);
+//            }
+//        }
 
         // takes in a color and creates a new marker icon of that color
         function makeMarkerIcon(markerColor) {
@@ -241,9 +275,22 @@
 
     </script>
 
+<!--
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuc1YdQ0IYL36mzpQXIhtRv4u-N44LUBg&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyCuc1YdQ0IYL36mzpQXIhtRv4u-N44LUBg&v=3&callback=initMap">
     </script>
+-->
+
+          <script async defer
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAUODqQVWvsNX2yIANFc7XYdAoLfG7jgOw&v=3&callback=initMap">
+    </script>
+
+
+<!--
+      <script async defer type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUODqQVWvsNX2yIANFc7XYdAoLfG7jgOw&libraries=geometry">
+</script>
+-->
 
   </body>
 </html>
