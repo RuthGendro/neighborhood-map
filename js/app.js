@@ -46,3 +46,9 @@ function initMap() {
     // Start the ViewModel here so it doesn't initialize before Google Maps loads
     ko.applyBindings(new ViewModel());
 }
+
+// Alert the user if google maps isn't working
+function googleError() {
+    "use strict";
+    document.getElementById('map').innerHTML = "<h2>Google Maps is not loading. Please try again later.</h2>";
+}
