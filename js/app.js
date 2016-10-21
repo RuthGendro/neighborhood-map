@@ -186,4 +186,10 @@ var ViewModel = function () {
             }, 500);
         });
     });
+
+    // Activate the appropriate marker when the user clicks a list item
+    self.showInfo = function (placeItem) {
+        google.maps.event.trigger(placeItem.marker, 'click');
+        self.hideElements();
+    };
 };
