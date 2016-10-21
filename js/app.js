@@ -31,3 +31,18 @@ var locations = [
         // id: "" ?
     }
 ];
+
+// Initialize the map
+var map;
+function initMap() {
+    "use strict";
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 47.742322, lng: -121.985678},
+        zoom: 10,
+        styles: styles,
+        mapTypeControl: false,
+        // disableDefaultUI: true
+    });
+    // Start the ViewModel here so it doesn't initialize before Google Maps loads
+    ko.applyBindings(new ViewModel());
+}
