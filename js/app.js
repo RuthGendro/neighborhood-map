@@ -177,5 +177,13 @@ var ViewModel = function () {
             }
     });
 
-
+        // This event listener makes the error message on AJAX error display in the infowindow
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, this);
+            placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                placeItem.marker.setAnimation(null);
+            }, 500);
+        });
+    });
 };
