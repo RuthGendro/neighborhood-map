@@ -69,3 +69,29 @@ var Place = function (data) {
     this.photoSuffix = ko.observable('');
     this.contentString = ko.observable('');
 };
+
+
+// ViewModel
+var ViewModel = function () {
+    "use strict";
+    // Make this accessible
+    var self = this;
+
+    // Create an array of all places
+    this.placeList = ko.observableArray([]);
+
+    // Call the Place constructor
+    // Create Place objects for each item in locations & store them in the above array
+    locations.forEach(function (placeItem) {
+        self.placeList.push(new Place(placeItem));
+    });
+
+    // Initialize the infowindow
+    var infowindow = new google.maps.InfoWindow({
+        maxWidth: 200,
+    });
+
+    // Initialize marker
+    var marker;
+
+};
