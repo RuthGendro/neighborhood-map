@@ -52,3 +52,20 @@ function googleError() {
     "use strict";
     document.getElementById('map').innerHTML = "<h2>Google Maps is not loading. Please try again later.</h2>";
 }
+
+
+var Place = function (data) {
+    "use strict";
+    this.name = ko.observable(data.name);
+    this.lat = ko.observable(data.lat);
+    this.lng = ko.observable(data.lng);
+    // this.id = ko.observable(data.id);
+    this.marker = ko.observable();
+    this.description = ko.observable('');
+    this.address = ko.observable('');
+    this.url = ko.observable('');
+    this.canonicalUrl = ko.observable('');
+    this.photoPrefix = ko.observable('');
+    this.photoSuffix = ko.observable('');
+    this.contentString = ko.observable('');
+};
