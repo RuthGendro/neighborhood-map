@@ -1,303 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Charlotte Burger Time</title>
-      <link rel="stylesheet" href="css/app.css">
-      <script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-    <style>
-      html,
-      body {
-        font-family: Arial, sans-serif;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Fishing Data">
+		<meta name="author" content="Ruth Gendro">
+		<title>Fishing Data</title>
+		<link rel="stylesheet" href="css/app.css">
 
-      #map {
-          bottom: 0px;
-          height: 100%;
-          left: 362px;
-          positon: absolute;
-          right: 0px;
-          width: auto;
-          top: -190px;
-      }
+</head>
 
-        .options-box {
-            background: #fff;
-            border: 1px solid #999;
-            border-radius: 3px;
-            height: 100%;
-            line-height: 35px;
-            padding: 10px 10px 30px 10px;
-            text-align: left;
-            width: 340px;
-        }
-    </style>
-  </head>
-  <body>
-      <div class="container">
-          <div class="options-box">
-              <h1>Fishing Holes We've Visited</h1>
-              <div>
-               <input id="show-listings" type="button" value="Show Listings">
-<!--               <input id="hide-listings" type="button" value="Hide Listings">-->
-              </div>
-          </div>
-      </div>
-         <div id="map"></div>
-    <script>
-      var map;
-
-        // Create a new blank array for all the listing markers
-        var markers = [];
-
-      function initMap() {
-          var styles = [
-    {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#444444"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#f2f2f2"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 45
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#46bcec"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    }
-]
-        // Constructor creates a new map - only center and zoom are required.
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 47.742322, lng: -121.985678},
-          zoom: 10,
-            styles: styles,
-            mapTypeControl: false
-        });
-
-          // map listings shown to user
-          var locations = [
-              {title: 'Lake Margaret', location: {lat: 47.769702, lng: -121.901639}},
-              {title: 'Lake Shannon', location: {lat: 48.561961, lng: -121.87395}},
-              {title: 'Cle Elum Lake', location: {lat: 47.279637, lng: -121.10405}},
-              {title: 'Lake Wenatchee', location: {lat: 47.824453, lng: -120.777017}}
-          ];
-
-          var largeInfowindow = new google.maps.InfoWindow();
-          var bounds = new google.maps.LatLngBounds();
-
-          // Style the markers - listing marker
-          var defaultIcon = makeMarkerIcon('32c548');
-
-          // Create a highlighter marker on mouseover
-          var highlightedIcon = makeMarkerIcon('FFFF24');
-
-          // Uses the location array to create an array of markers on initialization
-          for (var i = 0; i < locations.length; i++) {
-              // Get the position from the location array
-              var position = locations[i].location;
-              var title = locations[i].title;
-              // Create a marker per location, and put into markers array
-              var marker = new google.maps.Marker({
-                  position: position,
-                  title: title,
-                  icon: defaultIcon,
-                  animation: google.maps.Animation.DROP,
-                  id: i
-              });
-              // Push the marker to array of markers
-              markers.push(marker);
-              // Extend the boundaries of the map for each marker
-              bounds.extend(marker.position);
-              // Create an onclick event to open an infowindow at each marker
-              marker.addListener('click', function() {
-                  populateInfoWindow(this, largeInfowindow);
-              });
-              // Two event listeners - for mouseover and mouseout
-              marker.addListener('mouseover', function() {
-                  this.setIcon(highlightedIcon);
-              });
-              marker.addListener('mouseout', function() {
-                  this.setIcon(defaultIcon);
-              });
-          }
-
-          document.getElementById('show-listings').addEventListener('click', showListings);
-//          document.getElementById('hide-listings').addEventListener('click', hideListings);
-      }
+	<body>
+		<div id="map" data-bind="click: hideElements"></div>
+			<div id="pageTitle"><h2>Coffee In Newport, OR</h2></div>
+				<div data-bind="css: navStatus">
+				<input id="search" placeholder="Search by name" data-bind="textInput: userInput, event: {keyup: filterMarkers}">
+				<div id="list-holder">
+					<ul id="list-view" data-bind="foreach: visible">
+						<li id="list-name" data-bind="text: name, click: $parent.showInfo"></li>
+					</ul>
+				</div>
+		</div>
+		<div id="error"></div>
 
 
-
-
-
-
-          // This function populates the infowindow when the mark is clicked. Allows
-          // only one infowindow will open at the marker that is clicked, and
-          // populate based on that markers position
-          function populateInfoWindow(marker, infowindow) {
-              // Check to make sure the infowindow is not already open on this marker
-              if (infowindow.marker != marker) {
-                  infowindow.marker = marker;
-                  infowindow.setContent('<div>' + marker.title + '</div>');
-                  infowindow.open(map, marker);
-                  // Make sure the marker property is cleared if the
-                  // infowwindow is closed
-                  infowindow.addListener('closeclick',function(){
-                      infowindow.setMarker(null);
-                  });
-                  var streetViewService = new google.maps.StreetViewService();
-                  var radius = 50;
-                  // In case the status is OK, which means the pano was found,
-                  // compute the position of the streetview image, then
-                  // calculate heading, then get the pano and set options
-                  function getStreetView(data, status) {
-                      if (status == google.maps.StreetViewStatus.OK) {
-                          var nearStreetViewLocation = data.location.latLng;
-                          var heading = google.maps.geometry.spherical.computeHeading(
-                            nearStreetViewLocation, marker.position);
-                            infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-                            var panoramaOptions = {
-                                position: nearStreetViewLocation,
-                                pov: {
-                                    heading: heading,
-                                    pitch: 30
-                                }
-                            };
-
-                      var panorama = new google.maps.StreetViewPanorama(
-                        document.getElementById('pano'), panoramaOptions);
-                          } else {
-                              infowindow.setContent('<div>' + marker.title + '</div>' +
-                                                    '<div>No Street View Found</div>');
-                          }
-                    }
-                  // Use streetview service to get the closest streeview image within
-                  // 50 meters of the markers position
-                  streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-                  // Open the infowindow on the correct marker
-                  infowindow.open(map, marker);
-              }
-          }
-
-
-
-
-        function showListings() {
-            var bounds = new google.maps.LatLngBounds();
-            // Extend the boundaries of the map for each marker and display the marker
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
-                bounds.extend(markers[i].position);
-            }
-            map.fitBounds(bounds);
-        }
-
-        // This function will through through the listings and hide them all
-//        function hideListings() {
-//            for (var i = 0; i < markers.length; i++) {
-//                markers[i].setMap(null);
-//            }
-//        }
-
-        // takes in a color and creates a new marker icon of that color
-        function makeMarkerIcon(markerColor) {
-            var markerImage = new google.maps.MarkerImage(
-                'https://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + '|40|_|%E2%80%A2',
-                new google.maps.Size(21, 34),
-                new google.maps.Point(0, 0),
-                new google.maps.Point(10, 24),
-                new google.maps.Size(21, 34));
-            return markerImage;
-        }
-
-    </script>
-
-<!--
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyCuc1YdQ0IYL36mzpQXIhtRv4u-N44LUBg&v=3&callback=initMap">
-    </script>
--->
-
-          <script async defer
-        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAUODqQVWvsNX2yIANFc7XYdAoLfG7jgOw&v=3&callback=initMap">
-    </script>
-
-
-<!--
-      <script async defer type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUODqQVWvsNX2yIANFc7XYdAoLfG7jgOw&libraries=geometry">
-</script>
--->
+      	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/app.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAUODqQVWvsNX2yIANFc7XYdAoLfG7jgOw&v=3&callback=initMap" onerror="googleError()"></script>
 
   </body>
 </html>

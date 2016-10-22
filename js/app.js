@@ -1,34 +1,40 @@
+// To Do
+// Fix map styling
+// Fix page layout styling
+// Fix marker color changes
+// Add data and additional js for trip descriptions
+
 // Array of locations
 var locations = [
     {
         name: "Lake Margaret",
         lat: 47.769702,
         lng: -121.901639,
-        // id: "" ?
+        id: "4da1f29cb521224b8b6bffed"
     },
     {
         name: "Lake Shannon",
         lat: 48.561961,
         lng: -121.87395,
-        // id: "" ?
+        id: "557ce43e498e4837f79083ee"
     },
     {
         name: "Cle Elum Lake",
         lat: 47.279637,
         lng: -121.10405,
-        // id: "" ?
+        id: "55a9befb498e8f5cfae0e533"
     },
     {
         name: "Lake Wenatchee",
         lat: 47.824453,
-        lng: lng: -120.777017,
-        // id: "" ?
+        lng: -120.777017,
+        id: "4b784595f964a5201cc12ee3"
     },
     {
         name: "Big Lake",
         lat: 48.402883,
-        lng: lng: -122.241265,
-        // id: "" ?
+        lng: -122.241265,
+        id: "4c2cfd5d987f20a1e4ab48aa"
     }
 ];
 
@@ -45,6 +51,87 @@ function initMap() {
     });
     // Start the ViewModel here so it doesn't initialize before Google Maps loads
     ko.applyBindings(new ViewModel());
+
+    var styles = [
+    {
+        "featureType": "administrative",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#444444"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#f2f2f2"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 45
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#46bcec"
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    }
+]
 }
 
 // Alert the user if google maps isn't working
@@ -59,11 +146,12 @@ var Place = function (data) {
     this.name = ko.observable(data.name);
     this.lat = ko.observable(data.lat);
     this.lng = ko.observable(data.lng);
-    // this.id = ko.observable(data.id);
+    this.id = ko.observable(data.id);
     this.marker = ko.observable();
     this.description = ko.observable('');
     this.address = ko.observable('');
     this.url = ko.observable('');
+    this.rating = ko.observable('');
     this.canonicalUrl = ko.observable('');
     this.photoPrefix = ko.observable('');
     this.photoSuffix = ko.observable('');
@@ -152,7 +240,7 @@ var ViewModel = function () {
                 var contentString = '<div id="iWindow"><h4>' + placeItem.name() + '</h4><div id="pic"><img src="' +
                         placeItem.photoPrefix() + '110x110' + placeItem.photoSuffix() +
                         '" alt="Image Location"></div><p>Information from Foursquare:</p><p>' +
-                        placeItem.phone() + '</p><p>' + placeItem.address() + '</p><p>' +
+                        placeItem.address() + '</p><p>' +
                         placeItem.description() + '</p><p>Rating: ' + placeItem.rating() +
                         '</p><p><a href=' + placeItem.url() + '>' + placeItem.url() +
                         '</a></p><p><a target="_blank" href=' + placeItem.canonicalUrl() +
