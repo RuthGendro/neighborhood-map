@@ -1,6 +1,5 @@
 // To Do
 // Fix map styling
-// Fix page layout styling
 // Fix marker color changes
 // Add data and additional js for trip descriptions
 
