@@ -2,6 +2,7 @@
 // Fix map styling
 // Fix marker color changes
 // Add data and additional js for trip descriptions
+// add .gitignore
 
 // Array of locations
 var locations = [
@@ -37,21 +38,9 @@ var locations = [
     }
 ];
 
-// Initialize the map
-var map;
-function initMap() {
-    "use strict";
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 47.742322, lng: -121.985678},
-        zoom: 10,
-        styles: styles,
-        mapTypeControl: false,
-        // disableDefaultUI: true
-    });
-    // Start the ViewModel here so it doesn't initialize before Google Maps loads
-    ko.applyBindings(new ViewModel());
 
-    var styles = [
+
+var styles = [
     {
         "featureType": "administrative",
         "elementType": "labels.text.fill",
@@ -131,6 +120,21 @@ function initMap() {
         ]
     }
 ]
+
+// Initialize the map
+var map;
+function initMap() {
+    "use strict";
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 47.742322, lng: -121.985678},
+        zoom: 10,
+        styles: styles,
+        mapTypeControl: false,
+        // disableDefaultUI: true
+    });
+    // Start the ViewModel here so it doesn't initialize before Google Maps loads
+    ko.applyBindings(new ViewModel());
+
 }
 
 // Alert the user if google maps isn't working
