@@ -1,8 +1,5 @@
 // To Do
-// Fix marker color changes
 // Add data and additional js for trip descriptions
-// add .gitignore
-// Center map on markers
 
 // Array of locations
 var locations = [
@@ -10,31 +7,36 @@ var locations = [
         name: "Lake Margaret",
         lat: 47.769702,
         lng: -121.901639,
-        id: "4da1f29cb521224b8b6bffed"
+        id: "4da1f29cb521224b8b6bffed",
+        trip: "06/10/15"
     },
     {
         name: "Lake Shannon",
         lat: 48.561961,
         lng: -121.87395,
-        id: "557ce43e498e4837f79083ee"
+        id: "557ce43e498e4837f79083ee",
+        trip: "06/10/15"
     },
     {
         name: "Cle Elum Lake",
         lat: 47.279637,
         lng: -121.10405,
-        id: "55a9befb498e8f5cfae0e533"
+        id: "55a9befb498e8f5cfae0e533",
+        trip: "06/10/15"
     },
     {
         name: "Lake Wenatchee",
         lat: 47.824453,
         lng: -120.777017,
-        id: "4b784595f964a5201cc12ee3"
+        id: "4b784595f964a5201cc12ee3",
+        trip: "06/10/15"
     },
     {
         name: "Big Lake",
         lat: 48.402883,
         lng: -122.241265,
-        id: "4c2cfd5d987f20a1e4ab48aa"
+        id: "4c2cfd5d987f20a1e4ab48aa",
+        trip: "06/10/15"
     }
 ];
 
@@ -128,7 +130,7 @@ function initMap() {
     "use strict";
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 47.742322, lng: -121.985678},
-        zoom: 10,
+        zoom: 8,
         styles: styles,
         mapTypeControl: false,
         // disableDefaultUI: true
@@ -155,7 +157,6 @@ var Place = function (data) {
     this.description = ko.observable('');
     this.address = ko.observable('');
     this.url = ko.observable('');
-    this.rating = ko.observable('');
     this.canonicalUrl = ko.observable('');
     this.photoPrefix = ko.observable('');
     this.photoSuffix = ko.observable('');
@@ -260,8 +261,8 @@ var ViewModel = function () {
                         placeItem.photoPrefix() + '110x110' + placeItem.photoSuffix() +
                         '" alt="Image Location"></div><p>Information from Foursquare:</p><p>' +
                         placeItem.address() + '</p><p>' +
-                        placeItem.description() + '</p><p>Rating: ' + placeItem.rating() +
-                        '</p><p><a href=' + placeItem.url() + '>' + placeItem.url() +
+                        placeItem.description() + '</p>' +
+                        '<p><a href=' + placeItem.url() + '>' + placeItem.url() +
                         '</a></p><p><a target="_blank" href=' + placeItem.canonicalUrl() +
                         '>Foursquare Page</a></p><p><a target="_blank" href=https://www.google.com/maps/dir/Current+Location/' +
                         placeItem.lat() + ',' + placeItem.lng() + '>Directions</a></p></div>';
@@ -269,11 +270,6 @@ var ViewModel = function () {
                 // Add infowindows credit http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
                 google.maps.event.addListener(placeItem.marker, 'click', function () {
                     infowindow.open(map, this);
-                    // Bounce animation credit https://github.com/Pooja0131/FEND-Neighbourhood-Project5a/blob/master/js/app.js
-                    placeItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-                    setTimeout(function () {
-                        placeItem.marker.setAnimation(null);
-                    }, 500);
                     infowindow.setContent(contentString);
                 });
             },
