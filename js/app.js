@@ -1,8 +1,8 @@
 // To Do
-// Fix map styling
 // Fix marker color changes
 // Add data and additional js for trip descriptions
 // add .gitignore
+// Center map on markers
 
 // Array of locations
 var locations = [
@@ -39,6 +39,7 @@ var locations = [
 ];
 
 
+// Map styling
 
 var styles = [
     {
@@ -185,17 +186,32 @@ var ViewModel = function () {
     // Initialize marker
     var marker;
 
+
         // For each place, set markers, request Foursquare data, and set event listeners for the infowindow
     // Credit https://github.com/kacymckibben/project-5-app.git
     self.placeList().forEach(function (placeItem) {
+
+           // Style the markers - listing marker
+          var defaultIcon = makeMarkerIcon('32c548');
+          // Create a highlighter marker on mouseover
+          var highlightedIcon = makeMarkerIcon('FFFF24');
 
         // Define markers for each place
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(placeItem.lat(), placeItem.lng()),
             map: map,
+            icon: defaultIcon,
             animation: google.maps.Animation.DROP
         });
         placeItem.marker = marker;
+
+        // Two event listeners - for mouseover and mouseout
+              marker.addListener('mouseover', function() {
+                  this.setIcon(highlightedIcon);
+              });
+              marker.addListener('mouseout', function() {
+                  this.setIcon(defaultIcon);
+              });
 
         // Make AJAX request to Foursquare
         $.ajax({
@@ -334,4 +350,15 @@ var ViewModel = function () {
             place.marker.setVisible(true);
         });
     };
+
+            // takes in a color and creates a new marker icon of that color
+        function makeMarkerIcon(markerColor) {
+            var markerImage = new google.maps.MarkerImage(
+                'https://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + '|40|_|%E2%80%A2',
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(10, 24),
+                new google.maps.Size(21, 34));
+            return markerImage;
+        }
 };
