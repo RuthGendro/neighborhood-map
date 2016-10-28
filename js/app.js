@@ -8,36 +8,36 @@ var locations = [
         lat: 47.769702,
         lng: -121.901639,
         id: "4da1f29cb521224b8b6bffed",
-        trip: "06/10/15"
+        trip: "Trip 1: 06/15/16 - Fish caught: 3"
     },
     {
         name: "Lake Shannon",
         lat: 48.561961,
         lng: -121.87395,
         id: "557ce43e498e4837f79083ee",
-        trip: "06/10/15"
+        trip: "Trip 1: 07/24/16 - Fish caught: 0 <br> Trip 2: 08/14/16 - Fish caught: 0"
     },
     {
         name: "Cle Elum Lake",
         lat: 47.279637,
         lng: -121.10405,
         id: "55a9befb498e8f5cfae0e533",
-        trip: "06/10/15"
+        trip: "Trip 1: 08/13/16 - Fish caught: 0"
     },
     {
         name: "Lake Wenatchee",
         lat: 47.824453,
         lng: -120.777017,
         id: "4b784595f964a5201cc12ee3",
-        trip: "06/10/15"
+        trip: "Trip 1: 07/06/16 - Fish caught: 0"
     },
     {
         name: "Big Lake",
         lat: 48.402883,
         lng: -122.241265,
         id: "4c2cfd5d987f20a1e4ab48aa",
-        trip: "06/10/15"
-    }
+        trip: "TBF (To be fished)"
+    },
 ];
 
 
@@ -153,6 +153,7 @@ var Place = function (data) {
     this.lat = ko.observable(data.lat);
     this.lng = ko.observable(data.lng);
     this.id = ko.observable(data.id);
+    this.trip = ko.observable(data.trip);
     this.marker = ko.observable();
     this.description = ko.observable('');
     this.address = ko.observable('');
@@ -265,7 +266,7 @@ var ViewModel = function () {
                         '<p><a href=' + placeItem.url() + '>' + placeItem.url() +
                         '</a></p><p><a target="_blank" href=' + placeItem.canonicalUrl() +
                         '>Foursquare Page</a></p><p><a target="_blank" href=https://www.google.com/maps/dir/Current+Location/' +
-                        placeItem.lat() + ',' + placeItem.lng() + '>Directions</a></p></div>';
+                        placeItem.lat() + ',' + placeItem.lng() + '>Directions</a></p>' + placeItem.trip() + '</p></div>';
 
                 // Add infowindows credit http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
                 google.maps.event.addListener(placeItem.marker, 'click', function () {
